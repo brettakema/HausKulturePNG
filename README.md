@@ -1,56 +1,23 @@
-# Welcome to your Expo app 👋
+# Haus Kulture PNG
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A community archive for traditional song lyrics and recordings, attire, dance, and local places in Papua New Guinea. Built with Expo Router, React Native, and Supabase.
 
-## Get started
+## Run locally
 
-1. Install dependencies
+1. Create a Supabase project and copy `.env.example` to `.env`.
+2. Set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` using the project URL and publishable/anon key from the Supabase dashboard. These are public client credentials; never use a service-role key in the app.
+3. Run [`supabase/schema.sql`](./supabase/schema.sql) in the Supabase SQL Editor. This creates the private `cultural-media` storage bucket and its RLS policies as well as the database tables and policies. If uploads show “Bucket not found”, this script has not been applied to the Supabase project configured in `.env`.
+4. Install packages and start Expo:
 
-   ```bash
+   ```sh
    npm install
-   ```
-
-2. Start the app
-
-   ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+The app uses Supabase Auth with persistent AsyncStorage sessions. Expo Router protected stacks gate all archive screens and detail routes. The main tab bar has Home, Archive, Places, and Profile; songs, attire, and dance are additional archive screens, while contribution and detail views are pushed on the app stack.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The Songs, Attire, Dance, and Places collections can be browsed by PNG's four regions and their provinces. Contributions and edits use the same province list so archive filters match consistently.
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Contributions can include lyrics, photos, video, and audio. Members can read published entries and their own submissions, edit or delete only their own entries, and upload media only to their own storage folder. Editing a published entry returns it to `pending` review. Media is stored in the private `cultural-media` bucket and served through short-lived signed URLs only to readers allowed by RLS. Reviewers should change approved records to `published` in Supabase; row-level security prevents contributors from publishing their own submissions.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Configure moderation and community consent processes before opening contributions to the public.
